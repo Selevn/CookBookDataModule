@@ -63,6 +63,40 @@ const recipe2 = {
     ingredients: ["a", "b"],
     directions: ["c", "d"],
 }
+const recipe3 = {
+    views: 2000,
+    author: 1,
+    likes: 50,
+    image: "imgs",
+    images: ["img", "img2", "img3"],
+    cookTime: 1000,
+    creationDate: 0,
+    desc: "21",
+    name: "same",
+    cloudinary_id: "s8xzn1mo92zory4j3ws7",
+    secondary_cloudinary_ids: [["s8xzn1mo92zory4j3ws6"], ["s8xzn1mo92zory4j3ws8"]],
+    commentsIds: [3,4],
+    ingredients: ["a", "b"],
+    directions: ["c", "d"],
+}
+const recipe4 = {
+    views: 2000,
+    author: 1,
+    likes: 50,
+    image: "im22gs",
+    images: ["im2g", "img22", "img23"],
+    cookTime: 1000,
+    creationDate: 0,
+    desc: "2221",
+    name: "same",
+    cloudinary_id: "s8xzn1mo92zory4j3ws7",
+    secondary_cloudinary_ids: [["s8xzn31mo92zory4j3ws6"], ["s8xzn1mo923zory4j3ws8"]],
+    commentsIds: [],
+    ingredients: ["a", "b"],
+    directions: ["c", "d"],
+}
+
+
 const cookbook1 = {
     _id:1,
     views: 2000,
@@ -98,6 +132,17 @@ const comment2 = {
     text: "comment2",
     date: 3
 }
+const comment3 = {
+    author: 1,
+    text: "comment3",
+    date: 2
+}
+const comment4 = {
+    author: 2,
+    text: "comment4",
+    date: 3
+}
+
 const userClear ={
     _id: 1,
     name: {first: "Ivan", last: "Skorodumov"},
@@ -114,10 +159,10 @@ exports.users = {
     user1Full, user1Public, user1Private, user2Full, user2Private, user2Public, userClear
 }
 exports.comments= {
-    comment1, comment2
+    comment1, comment2, comment3, comment4
 }
 exports.recipes= {
-    recipe1, recipe2
+    recipe1, recipe2, recipe3, recipe4
 }
 exports.cookbooks= {
     cookbook1, cookbook2,

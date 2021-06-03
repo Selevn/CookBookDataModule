@@ -1,0 +1,19 @@
+{
+  "name": "datalibrary",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mongoose": "^5.12.12"
+  },
+  "devDependencies": {
+    "jest": "^27.0.3",
+    "mongodb-memory-server": "^6.9.6"
+  }
+}

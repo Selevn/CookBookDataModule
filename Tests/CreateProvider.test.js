@@ -3,6 +3,8 @@ const {getUser} = require("../Providers/GetUserDataProviders")
 const {getCookBook} = require("../Providers/GetProviders")
 
 const db = require('./dbTestProvider')
+const {COMMENT_FIELDS} = require("../ConstantsProvider");
+const {USER_FIELDS} = require("../ConstantsProvider");
 const {users, cookbooks, recipes, comments} = require("./TestConstants");
 const {user1Full, user1Public, user2Full, user2Public, userClear} = users
 const {cookbook1, cookbook2} = cookbooks
@@ -88,13 +90,13 @@ describe('Create comment', () => {
     })
     it('Normal cookbook comment create', async () => {
         const itemId = 1
-        const result = await addComment({userId:1, type:COMMON.COOKBOOK, itemId:itemId, comment:"Good"})
+        const result = await addComment({[COMMENT_FIELDS.author]:1, [COMMENT_FIELDS.itemType]:COMMON.COOKBOOK, [COMMENT_FIELDS.itemId]:itemId, [COMMENT_FIELDS.text]:"Good"})
         expect(result).toBe(true)
 
         const user = (await getUser(1))[0]
         const cookBook = (await getCookBook(itemId))[0]
 
-        expect(user.comments).toContain(itemId)
+        expect(user[USER_FIELDS.comments]).toContain(itemId)
         expect(cookBook.commentsIds).toContain(1)
     })
 

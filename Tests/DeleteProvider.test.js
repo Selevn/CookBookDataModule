@@ -3,6 +3,7 @@ const {getCookBooks, getCookBook, getRecipes, getRecipe, getComments} = require(
 const {likeCookBook} = require("../Providers/InteractionsProvider")
 const {createUser, createCookBook, createRecipe, addComment} = require("../Providers/CreateProvider")
 const db = require('./dbTestProvider')
+const {COMMENT_FIELDS} = require("../ConstantsProvider");
 const {likeRecipe} = require("../Providers/InteractionsProvider");
 const {RECIPE_FIELDS} = require("../ConstantsProvider");
 const {COOKBOOK_FIELDS} = require("../ConstantsProvider");
@@ -26,28 +27,28 @@ afterAll(async () => await db.closeDatabase())
 describe("Delete comment", ()=>{
 
     it("No arg delete comment", async ()=>{
-        const result = deleteComment()
+        const result = await deleteComment()
         expect(result).toBeFalsy()
     })
     it("NULL arg delete comment", async ()=>{
-        const result = deleteComment(null)
+        const result = await deleteComment(null)
         expect(result).toBeFalsy()
     })
     it("Inf arg delete comment", async ()=>{
-        const result = deleteComment(1000)
+        const result = await deleteComment(1000)
         expect(result).toBeFalsy()
     })
     it("Normal arg delete cookbook comment", async ()=>{
         await createUser({...user1Full, [USER_FIELDS.comments]:[] })
         await createCookBook({...cookbook1, author:1, commentsIds:[] })
-        await addComment({userId:1, itemId:1,type:COMMON.COOKBOOK, comment:"newComment"})
+        await addComment({[COMMENT_FIELDS.author]:1, [COMMENT_FIELDS.itemId]:1,[COMMENT_FIELDS.itemType]:COMMON.COOKBOOK, [COMMENT_FIELDS.text]:"newComment"})
 
         let user = (await getUser(1))[0]
         let cookBook = (await getCookBook(1))[0]
         expect(user[USER_FIELDS.comments]).toContain(1)
         expect(cookBook.commentsIds).toContain(1)
 
-        const result = deleteComment(1)
+        const result = await deleteComment(1)
         expect(result).toBeTruthy()
 
         user = (await getUser(1))[0]
@@ -59,14 +60,14 @@ describe("Delete comment", ()=>{
     it("Normal arg delete recipe comment", async ()=>{
         await createUser({...user1Full, [USER_FIELDS.comments]:[] })
         await createRecipe({...recipe1, author:1, commentsIds:[] })
-        await addComment({userId:1, itemId:1,type:COMMON.RECIPE, comment:"newComment"})
+        await addComment({[COMMENT_FIELDS.author]:1, [COMMENT_FIELDS.itemId]:1,[COMMENT_FIELDS.itemType]:COMMON.RECIPE, [COMMENT_FIELDS.text]:"newComment"})
 
         let user = (await getUser(1))[0]
         let recipe = (await getRecipe(1))[0]
         expect(user.comments).toContain(1)
         expect(recipe.commentsIds).toContain(1)
 
-        const result = deleteComment(1)
+        const result = await deleteComment(1)
         expect(result).toBeTruthy()
 
         user = (await getUser(1))[0]
@@ -78,15 +79,15 @@ describe("Delete comment", ()=>{
 
 describe("Delete user", ()=>{
     it("No arg delete user", async ()=>{
-        const result = deleteUser()
+        const result = await deleteUser()
         expect(result).toBeFalsy()
     })
     it("NULL arg delete user", async ()=>{
-        const result = deleteUser(null)
+        const result = await deleteUser(null)
         expect(result).toBeFalsy()
     })
     it("Inf arg delete user", async ()=>{
-        const result = deleteUser(1000)
+        const result = await deleteUser(1000)
         expect(result).toBeFalsy()
     })
     it("Normal arg delete empty user", async ()=>{
@@ -94,7 +95,7 @@ describe("Delete user", ()=>{
         let user = (await getUser(1))[0]
         expect(user).toBeTruthy()
 
-        const result = deleteUser(1)
+        const result = await deleteUser(1)
         expect(result).toBeTruthy()
 
         user = (await getUser(1))[0]
@@ -110,7 +111,7 @@ describe("Delete user", ()=>{
         let user = (await getUser(1))[0]
         expect(user).toBeTruthy()
 
-        const result = deleteUser(1)
+        const result = await deleteUser(1)
         expect(result).toBeTruthy()
 
         user = (await getUser(1))[0]
@@ -128,15 +129,15 @@ describe("Delete user", ()=>{
 
 describe("Block user", ()=>{
     it("No arg block user", async ()=>{
-        const result = blockUser()
+        const result = await blockUser()
         expect(result).toBeFalsy()
     })
     it("NULL arg block user", async ()=>{
-        const result = blockUser(null)
+        const result = await blockUser(null)
         expect(result).toBeFalsy()
     })
     it("Inf arg block user", async ()=>{
-        const result = blockUser(1000)
+        const result = await blockUser(1000)
         expect(result).toBeFalsy()
     })
     it("Normal arg block empty user", async ()=>{
@@ -144,7 +145,7 @@ describe("Block user", ()=>{
         let user = (await getUser(1))[0]
         expect(user).toBeTruthy()
 
-        const result = blockUser(1)
+        const result = await blockUser(1)
         expect(result).toBeTruthy()
 
         user = (await getUser(1))[0]
@@ -160,7 +161,7 @@ describe("Block user", ()=>{
         let user = (await getUser(1))[0]
         expect(user).toBeTruthy()
 
-        const result = blockUser(1)
+        const result = await blockUser(1)
         expect(result).toBeTruthy()
 
         user = (await getUser(1))[0]
@@ -178,24 +179,24 @@ describe("Block user", ()=>{
 
 describe("Delete cookbook", ()=>{
     it("No arg delete cookbook", async ()=>{
-        const result = deleteCookBook()
+        const result = await deleteCookBook()
         expect(result).toBeFalsy()
     })
     it("NULL arg delete cookbook", async ()=>{
-        const result = deleteCookBook(null)
+        const result = await deleteCookBook(null)
         expect(result).toBeFalsy()
     })
     it("Inf arg delete cookbook", async ()=>{
-        const result = deleteCookBook(1000)
+        const result = await deleteCookBook(1000)
         expect(result).toBeFalsy()
     })
     it("Normal arg delete empty cookbook", async ()=>{
         await createCookBook({...cookbook1, [COOKBOOK_FIELDS.author]:user1Full._id, [COOKBOOK_FIELDS.commentsIds] :[] })
 
-        const result = deleteCookBook(1)
+        const result = await deleteCookBook(1)
         expect(result).toBeTruthy()
 
-        const result2 = getCookBook(1)
+        const result2 = (await getCookBook(1))[0]
         expect(result2).toBeFalsy()
 
     })
@@ -209,35 +210,35 @@ describe("Delete cookbook", ()=>{
         await likeCookBook(1, 1)
 
 
-        const result = deleteCookBook(1)
+        const result = await deleteCookBook(1)
         expect(result).toBeTruthy()
 
         user = (await getUser(1))[0]
         expect(user).toBeTruthy()
-        expect(user[USER_FIELDS.likes].cookbooks).not.toContain(1)
+        expect(user[USER_FIELDS.likes].cookBooks).not.toContain(1)
     })
 })
 
 describe("Delete recipe", ()=>{
     it("No arg delete recipe", async ()=>{
-        const result = deleteRecipe()
+        const result = await deleteRecipe()
         expect(result).toBeFalsy()
     })
     it("NULL arg delete recipe", async ()=>{
-        const result = deleteRecipe(null)
+        const result = await deleteRecipe(null)
         expect(result).toBeFalsy()
     })
     it("Inf arg delete recipe", async ()=>{
-        const result = deleteRecipe(1000)
+        const result = await deleteRecipe(1000)
         expect(result).toBeFalsy()
     })
     it("Normal arg delete empty recipe", async ()=>{
         await createRecipe({...cookbook1, [RECIPE_FIELDS.author]:user1Full._id, [RECIPE_FIELDS.commentsIds] :[] })
 
-        const result = deleteRecipe(1)
+        const result = await deleteRecipe(1)
         expect(result).toBeTruthy()
 
-        const result2 = getRecipe(1)
+        const result2 = (await getRecipe(1))[0]
         expect(result2).toBeFalsy()
 
     })
@@ -247,7 +248,7 @@ describe("Delete recipe", ()=>{
 
         await likeRecipe(1, 1)
 
-        const result = deleteRecipe(1)
+        const result = await deleteRecipe(1)
         expect(result).toBeTruthy()
 
         const user = (await getUser(1))[0]
@@ -259,11 +260,11 @@ describe("Delete recipe", ()=>{
         await createRecipe({...recipe1, author:1, commentsIds:[] })
         await createCookBook({...cookbook1, [COOKBOOK_FIELDS.recipesIds]:[1]})
 
-        const result = deleteRecipe(1)
+        const result = await deleteRecipe(1)
         expect(result).toBeTruthy()
 
-        const cookBook = (await getUser(1))[0]
-        expect(cookBook[COOKBOOK_FIELDS.recipesIds]).not.toContain(1)
+        const data = (await getRecipes({ids:JSON.stringify([1])}))
+        expect(data.docs).not.toContain(1)
     })
     it("Normal arg delete recipe in cookbook and in user like", async ()=>{
         await createUser({...user1Full, comments:[] })
@@ -272,14 +273,15 @@ describe("Delete recipe", ()=>{
 
         await likeRecipe(1, 1)
 
-        const result = deleteRecipe(1)
+        const result = await deleteRecipe(1)
         expect(result).toBeTruthy()
 
         const user = (await getUser(1))[0]
         expect(user).toBeTruthy()
         expect(user[USER_FIELDS.likes].recipes).not.toContain(1)
-        const cookBook = (await getUser(1))[0]
-        expect(cookBook[COOKBOOK_FIELDS.recipesIds]).not.toContain(1)
+
+        const data = (await getRecipes({ids:JSON.stringify([1])}))
+        expect(data.docs).not.toContain(1)
     })
 
 })

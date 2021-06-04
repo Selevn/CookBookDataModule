@@ -113,6 +113,7 @@ exports.FOLDERS = {
 };
 
 exports.USER_FIELDS = {
+  ID: '_id',
   name: 'name',
   firstName: 'name.first',
   lastName: 'name.last',
@@ -123,6 +124,7 @@ exports.USER_FIELDS = {
   likes: 'likes',
   comments: 'comments',
   cloudinary_id: 'cloudinary_id',
+  isBlocked: 'isBlocked'
 };
 exports.RECIPE_FIELDS = {
   views: 'views',
@@ -154,6 +156,15 @@ exports.COOKBOOK_FIELDS = {
   likes: 'likes',
   ID: '_id',
   cloudinary_id: 'cloudinary_id',
+};
+
+exports.COMMENT_FIELDS = {
+  author: 'author',
+  text: 'text',
+  date: 'date',
+  itemType:'itemType',
+  itemId:'itemId',
+  ID: '_id',
 };
 
 exports.TOAST_SETTINGS = {

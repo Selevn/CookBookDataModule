@@ -1,3 +1,4 @@
+const {COMMENT_FIELDS} = require("../ConstantsProvider");
 const {COMMON} = require("../ConstantsProvider");
 const {USER_FIELDS} = require("../ConstantsProvider");
 const {RECIPE_FIELDS} = require("../ConstantsProvider");
@@ -42,15 +43,17 @@ createRecipe = async (inputRecipe) => {
 addComment = async (prop) => {
     if(!prop)
         return false
-    const {userId, type, itemId, comment} = prop
+    const type = prop[COMMENT_FIELDS.itemType]
+    const userId = prop[COMMENT_FIELDS.author]
+    const itemId = prop[COMMENT_FIELDS.itemId]
+
+    //{userId, type, itemId, comment} = prop
     try {
         const commentId = (await Comments.countDocuments({})) + 1;
         const newComment = {
-            ...comment,
-            author: userId,
-            _id: commentId
+            ...prop,
         }
-        const saveComment = (new Comments(newComment)).save();
+        const saveComment = ((new Comments({...newComment,[COMMENT_FIELDS.ID]:commentId})).save());
         const updateUser = Users.updateOne(
             {_id: Number(userId)},
             {$push: {[USER_FIELDS.comments]: commentId}}
